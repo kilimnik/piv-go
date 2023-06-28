@@ -32,7 +32,7 @@ import (
 	"strconv"
 	"strings"
 
-	rsafork "github.com/go-piv/piv-go/third_party/rsa"
+	rsafork "github.com/kilimnik/piv-go/third_party/rsa"
 )
 
 // errMismatchingAlgorithms is returned when a cryptographic operation
@@ -404,11 +404,11 @@ var retiredKeyManagementSlots = map[uint32]Slot{
 // RetiredKeyManagementSlot provides access to "retired" slots. Slots meant for old Key Management
 // keys that have been rotated. YubiKeys 4 and later support values between 0x82 and 0x95 (inclusive).
 //
-//     slot, ok := RetiredKeyManagementSlot(0x82)
-//     if !ok {
-//         // unrecognized slot
-//     }
-//     pub, err := yk.GenerateKey(managementKey, slot, key)
+//	slot, ok := RetiredKeyManagementSlot(0x82)
+//	if !ok {
+//	    // unrecognized slot
+//	}
+//	pub, err := yk.GenerateKey(managementKey, slot, key)
 //
 // https://developers.yubico.com/PIV/Introduction/Certificate_slots.html#_slot_82_95_retired_key_management
 func RetiredKeyManagementSlot(key uint32) (Slot, bool) {
@@ -809,12 +809,11 @@ func pinPolicy(yk *YubiKey, slot Slot) (PINPolicy, error) {
 // If the public key hasn't been stored externally, it can be provided by
 // fetching the slot's attestation certificate:
 //
-//		cert, err := yk.Attest(slot)
-//		if err != nil {
-//			// ...
-//		}
-//		priv, err := yk.PrivateKey(slot, cert.PublicKey, auth)
-//
+//	cert, err := yk.Attest(slot)
+//	if err != nil {
+//		// ...
+//	}
+//	priv, err := yk.PrivateKey(slot, cert.PublicKey, auth)
 func (yk *YubiKey) PrivateKey(slot Slot, public crypto.PublicKey, auth KeyAuth) (crypto.PrivateKey, error) {
 	pp := PINPolicyNever
 	if _, ok := pinPolicyMap[auth.PINPolicy]; ok {
