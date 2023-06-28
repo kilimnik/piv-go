@@ -205,15 +205,15 @@ func (a *Attestation) addExt(e pkix.Extension) error {
 // YubiKey certificate chains up to the Yubico CA, parsing additional information
 // out of the slot certificate, such as the touch and PIN policies of a key.
 func Verify(attestationCert, slotCert *x509.Certificate) (*Attestation, error) {
-	var v verifier
+	var v Verifier
 	return v.Verify(attestationCert, slotCert)
 }
 
-type verifier struct {
+type Verifier struct {
 	Roots *x509.CertPool
 }
 
-func (v *verifier) Verify(attestationCert, slotCert *x509.Certificate) (*Attestation, error) {
+func (v *Verifier) Verify(attestationCert, slotCert *x509.Certificate) (*Attestation, error) {
 	o := x509.VerifyOptions{KeyUsages: []x509.ExtKeyUsage{x509.ExtKeyUsageAny}}
 	o.Roots = v.Roots
 	if o.Roots == nil {
