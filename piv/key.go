@@ -241,10 +241,10 @@ func (v *verifier) Verify(attestationCert, slotCert *x509.Certificate) (*Attesta
 	if err != nil {
 		return nil, fmt.Errorf("error verifying attestation certificate: %v", err)
 	}
-	return parseAttestation(slotCert)
+	return ParseAttestation(slotCert)
 }
 
-func parseAttestation(slotCert *x509.Certificate) (*Attestation, error) {
+func ParseAttestation(slotCert *x509.Certificate) (*Attestation, error) {
 	var a Attestation
 	for _, ext := range slotCert.Extensions {
 		if err := a.addExt(ext); err != nil {
@@ -792,7 +792,7 @@ func pinPolicy(yk *YubiKey, slot Slot) (PINPolicy, error) {
 		}
 		return 0, fmt.Errorf("get attestation cert: %v", err)
 	}
-	a, err := parseAttestation(cert)
+	a, err := ParseAttestation(cert)
 	if err != nil {
 		return 0, fmt.Errorf("parse attestation cert: %v", err)
 	}
